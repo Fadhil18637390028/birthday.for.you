@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drag Papers ❤</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Zeyada&display=swap" rel="stylesheet">
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: 1000px;
+      background-image: url("https://www.psdgraphics.com/wp-content/uploads/2022/01/white-math-paper-texture.jpg");
+      background-position: center center;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .paper {
+      background-image: url("https://i0.wp.com/textures.world/wp-content/uploads/2018/10/2-Millimeter-Paper-Background-copy.jpg?ssl=1");
+      background-size: 500px;
+      background-position: center center;
+      padding: 20px 100px;
+      transform: rotateZ(-5deg);
+      box-shadow: 1px 15px 20px 0px rgba(0,0,0,0.5);
+      position: absolute;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .paper.heart {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .paper.heart::after {
+      content: "";
+      background-image: url('https://cdn.pixabay.com/photo/2016/03/31/19/25/cartoon-1294994__340.png');
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-size: 150px;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 0.6;
+    }
+
+    .paper.image {
+      padding: 10px;
+    }
+
+    .paper.image p {
+      font-size: 30px;
+    }
+
+    img {
+      max-height: 200px;
+      width: 100%;
+      user-select: none;
+    }
+
+    p {
+      font-family: 'Zeyada', cursive;
+      font-size: 50px;
+      color: rgb(0,0,100);
+      opacity: 0.75;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="paper heart"></div>
+
+<div class="paper image">
+  <p>ga ada lu mungkin</p>
+  <p>skill gw buat ginian kagak ada</p>
+  <img src="image.jpg" />
+</div>
+
+<div class="paper image">
+  <img src="image (2).jpg" />
+</div>
+
+<div class="paper image">
+  <p>makasih udah ngebuat gw</p>
+  <p>mikir gimana cara dapet duit</p>
+  <img src="image (3).jpg" />
+</div>
+
+<div class="paper red">
+  <p class="p1">semoga lu bisa menjadi lebih baik lagi</p>
+  <p class="p2">gw percaya lu bakal jadi orang pinter dalam bela diri, menggambar</p>
+</div>
+
+<div class="paper">
+  <p class="p1">walah Ada yang ultah nih cik!</p>
+  <p class="p1">selamat ulang tahun ya <span style="color: red !important;">❤</span></p>
+</div>
+
+<div class="paper">
+  <p class="p1">Geserin dah, ganggu aja!</p>
+</div>
+
+<script>
+  let highestZ = 1;
+
+  class Paper {
+    constructor(paper) {
+      this.paper = paper;
+      this.holding = false;
+      this.mouseTouchX = 0;
+      this.mouseTouchY = 0;
+      this.currentX = 0;
+      this.currentY = 0;
+      this.prevX = 0;
+      this.prevY = 0;
+
+      this.init();
+    }
+
+    init() {
+      const paper = this.paper;
+
+      const move = (x, y) => {
+        if (!this.holding) return;
+
+        const dx = x - this.prevX;
+        const dy = y - this.prevY;
+
+        this.currentX += dx;
+        this.currentY += dy;
+
+        paper.style.transform = translate(${this.currentX}px, ${this.currentY}px);
+
+        this.prevX = x;
+        this.prevY = y;
+      };
+
+      // Mouse
+      paper.addEventListener("mousedown", (e) => {
+        this.holding = true;
+        this.prevX = e.clientX;
+        this.prevY = e.clientY;
+        paper.style.zIndex = ++highestZ;
+      });
+
+      document.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
+      document.addEventListener("mouseup", () => { this.holding = false; });
+
+      // Touch
+      paper.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        this.holding = true;
+        this.prevX = touch.clientX;
+        this.prevY = touch.clientY;
+        paper.style.zIndex = ++highestZ;
+      });
+
+      document.addEventListener("touchmove", (e) => {
+        if (!this.holding) return;
+        const touch = e.touches[0];
+        move(touch.clientX, touch.clientY);
+      });
+
+      document.addEventListener("touchend", () => { this.holding = false; });
+    }
+  }
+
+  document.querySelectorAll(".paper").forEach((paper) => new Paper(paper));
+</script>
+
+</body>
+</html>
